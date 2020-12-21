@@ -8,20 +8,38 @@ class Counter extends Component{
         // this.value = 0;
         // this.handleClickPlus = this.handleClickPlus.bind(this);
         this.state = {
-            value: 0,
+            value: props.defaultValue,
             text: ''
         };
     }
-    
+
+
 
     handleClickPlus = ()=>{
-        // console.log('this', this)
 
-        this.setState({
-            value: this.state.value + 1,
-            text: "It works"
+        this.setState((state)=>{
+            return {
+                value: state.value + 1,
+            };
+        }, 
+        ()=>{
+            console.log(this.state.value);
         });
-        // this.state.value++;
+       
+        this.setState(()=>{
+           return {
+                text: "It works"
+            }
+        });
+
+       
+        
+    }
+
+    handleClickMinus = ()=> {
+        this.setState({
+            value: this.state.value - 1
+        });
     }
 
     render(){
@@ -29,16 +47,11 @@ class Counter extends Component{
         // console.log(this.props);
         return(
             <div>
-            Hello from Counter
-            <p>The default value is {this.props.defaultValue}</p>
+            <h4>{this.props.title}</h4>
 
             <h3>{this.state.value}</h3>
             <button
-            onClick= {()=> {
-                this.setState({
-                    value: this.state.value - 1
-                });
-            }}
+            onClick= {this.handleClickMinus}
             >
             count -
             </button>

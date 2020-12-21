@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import { Counter } from './Counter';
+import Product from './homework-6/Product';
 
 function Greeting() {
 
@@ -8,6 +9,7 @@ function Greeting() {
 
   return (
     <div>
+
       <h4>Hello, I am a function component!!!</h4>
       <h3>Hello, I am {name}!</h3>
     </div>
@@ -51,13 +53,31 @@ function App() {
   return (
     <div className="App">
       <header className={"App-header"}>
+           {/*
+        <div>
+          1: <Product
+            name='banana '
+            price='2$'
+            description=' Fresh bananas from Ecuador'
+          />
+        </div>
 
-        <Counter defaultValue={0}/>
+        <div>
+          2: <Product
+            name='apple '
+            price='1.5$'
+            description=' Apples from Armenia'
+          />
+        </div>
 
-        <Greeting />
+
+   
+        
+
+        <Greeting /> 
 
         <User
-          name='Alex'
+         name='Alex'
           age={25}
           surname='Doe'
         />
@@ -73,6 +93,12 @@ function App() {
           age={46}
           href='https://google.com'
         />
+
+        */}
+
+        <Counter 
+        title='The counter N1'
+        defaultValue={50}/>
       </header>
     </div>
   );
