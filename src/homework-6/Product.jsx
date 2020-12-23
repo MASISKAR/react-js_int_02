@@ -6,12 +6,13 @@ import Description from './Description';
 class Product extends React.Component {
 
     render() {
-const {name, price, description} = this.props;
+const {name, price, description, icon} = this.props;
         
         return (
             <>
-                <Name value={name}/>
-                <Price value={price}/>
+                <div>{icon}</div>
+               <Name value={name}/>
+               <Price value={price}/>
                 <Description value={description}/>
             </>
         );

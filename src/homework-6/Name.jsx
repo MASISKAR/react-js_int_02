@@ -6,7 +6,7 @@ class Name extends React.Component{
 const {value} = this.props;
 
         return(
-            <span>{value}</span>
+            <div>Name: {value}</div>
         );
     }
 }

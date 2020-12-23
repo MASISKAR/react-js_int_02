@@ -6,7 +6,7 @@ class Description extends React.Component{
         const {value} = this.props;
 
         return(
-            <span>{value}</span>
+            <div>Description: {value}</div>
         );
     }
 }

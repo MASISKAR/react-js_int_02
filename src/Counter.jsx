@@ -26,9 +26,13 @@ class Counter extends Component{
             console.log(this.state.value);
         });
        
+let isUser= true;
+
+
+
         this.setState(()=>{
            return {
-                text: "It works"
+                text: isUser? "It works": 'Other'
             }
         });
 
@@ -55,7 +59,6 @@ class Counter extends Component{
             >
             count -
             </button>
-
             <button
             onClick= {this.handleClickPlus}
             >
@@ -63,6 +66,8 @@ class Counter extends Component{
             </button>
 
             <p>{this.state.text}</p>
+            
+            <input type="email"/>
             </div>
         );
     }
