@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import styles from './todo.module.css';
+import {Container, Row, Col} from 'react-bootstrap';
 
 class ToDo extends Component{
 state = {
@@ -36,8 +38,30 @@ this.setState({
     render(){
         const {tasks, inputValue} = this.state;
   
+        // const taskComponents = tasks.map((task, index)=>{
+        //     return <li key={index} className={index === 2 ? styles.selected : null}>{task}</li>
+        // });
+
+        // const taskComponents = tasks.map((task, index)=>{
+        //     return <li key={index} className={`${index === 2 ? styles.selected : ""} ${styles.task}`}>{task}</li>
+        // });
+
         const taskComponents = tasks.map((task, index)=>{
-            return <li key={index}>{task}</li>
+            const classes = [styles.task];
+            if(index === 2){
+                classes.push(styles.selected);
+            }
+            return (
+                <Col
+                key={index}
+                xs={2}
+                sm={6}
+
+                // lg={name==='Alex'? 10 : 6}
+                >
+                 <li  className={classes.join(' ')}>{task}</li>
+                </Col>
+            )
         });
 
         return (
@@ -56,6 +80,11 @@ this.setState({
             <ol>
                 {taskComponents}
             </ol>
+            <Container>
+            <Row>
+            {taskComponents}
+            </Row>
+            </Container>
             </div>
         );
     }

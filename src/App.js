@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import ToDo from './components/ToDo';
+import ToDo from './components/ToDo/ToDo';
 import Conditional from './demo/conditional';
 
 function App() {
