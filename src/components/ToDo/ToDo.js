@@ -3,10 +3,10 @@ import styles from './todo.module.css';
 import {Container, Row, Col} from 'react-bootstrap';
 
 class ToDo extends Component{
-state = {
-    inputValue: '',
-    tasks: []
-};
+// state = {
+//     inputValue: '',
+//     tasks: []
+// };
 
 handleChange = (event)=>{
     this.setState({
