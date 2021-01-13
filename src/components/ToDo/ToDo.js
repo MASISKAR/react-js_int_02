@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import styles from './todo.module.css';
-import { Container, Row, Col, Card, Button, FormControl, InputGroup } from 'react-bootstrap';
+import { Container, Row, Col, Button, FormControl, InputGroup } from 'react-bootstrap';
 import idGenerator from '../../helpers/idGenerator';
+import Task from '../Task/Task';
 
 class ToDo extends Component {
     state = {
@@ -60,12 +61,12 @@ class ToDo extends Component {
         });
     };
 
-    
-    removeSelected = ()=>{
-        const {selectedTasks, tasks} = this.state;
 
-        const newTasks = tasks.filter((task)=>{
-            if(selectedTasks.has(task._id)){
+    removeSelected = () => {
+        const { selectedTasks, tasks } = this.state;
+
+        const newTasks = tasks.filter((task) => {
+            if (selectedTasks.has(task._id)) {
                 return false;
             }
             return true;
@@ -78,14 +79,14 @@ class ToDo extends Component {
 
     };
 
-    handleKeyDown = (event)=>{                     
-        if(event.key==="Enter"){
+    handleKeyDown = (event) => {
+        if (event.key === "Enter") {
             this.addTask();
         }
     };
 
     render() {
-        console.log('render');
+
         const { tasks, inputValue, selectedTasks } = this.state;
 
         const taskComponents = tasks.map((task) => {
@@ -99,29 +100,12 @@ class ToDo extends Component {
                     lg={3}
                     xl={2}
                 >
-
-                    <Card className={styles.task}>
-
-                        <Card.Body>
-                            <input
-                                type="checkbox"
-                                onChange={() => this.toggleTask(task._id)}
-                            />
-                            <Card.Title>{task.title}</Card.Title>
-                            <Card.Text>
-                                Some quick example text to build on the card title and
-                  </Card.Text>
-                            <Button
-                                variant="danger"
-                                disabled={!!selectedTasks.size}
-                                onClick={() => this.deleteTask(task._id)}
-                            >
-                                Delete
-                  </Button>
-                        </Card.Body>
-                    </Card>
-
-
+                    <Task 
+                    data={task}
+                    onToggle = {this.toggleTask}
+                    disabled = {!!selectedTasks.size}
+                    onDelete = {this.deleteTask}
+                    />
                 </Col>
             )
         });
@@ -129,9 +113,6 @@ class ToDo extends Component {
         return (
             <div>
                 <h2>ToDo List</h2>
-
-
-
                 <Container>
                     <Row className="justify-content-center">
                         <Col xs={10}>
@@ -140,7 +121,7 @@ class ToDo extends Component {
                                     placeholder="Input your task"
                                     value={inputValue}
                                     onChange={this.handleChange}
-                                    onKeyDown = {this.handleKeyDown}
+                                    onKeyDown={this.handleKeyDown}
                                     disabled={!!selectedTasks.size}
                                 />
                                 <InputGroup.Append>
