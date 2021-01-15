@@ -1,41 +1,24 @@
 import React, { Component } from 'react';
-import styles from './todo.module.css';
-import { Container, Row, Col, Button, FormControl, InputGroup } from 'react-bootstrap';
-import idGenerator from '../../helpers/idGenerator';
+// import styles from './todo.module.css';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import Task from '../Task/Task';
+import NewTask from '../NewTask/NewTask';
+import Confirm from '../Confirm';
 
 class ToDo extends Component {
     state = {
-        inputValue: '',
         tasks: [],
-        selectedTasks: new Set()
+        selectedTasks: new Set(),
+        showConfirm: false
     };
 
-    handleChange = (event) => {
-        this.setState({
-            inputValue: event.target.value
-        });
-    };
-
-    addTask = () => {
-        const inputValue = this.state.inputValue.trim();
-
-        if (!inputValue) {
-            return;
-        }
-
-        const newTask = {
-            _id: idGenerator(),
-            title: inputValue
-        };
 
 
+    addTask = (newTask) => {
         const tasks = [...this.state.tasks, newTask];
 
-
         this.setState({
-            tasks,
-            inputValue: ''
+            tasks
         });
     };
 
@@ -74,20 +57,22 @@ class ToDo extends Component {
 
         this.setState({
             tasks: newTasks,
-            selectedTasks: new Set()
+            selectedTasks: new Set(),
+            showConfirm: false
         });
 
     };
 
-    handleKeyDown = (event) => {
-        if (event.key === "Enter") {
-            this.addTask();
-        }
+    toggleConfirm = ()=>{
+        this.setState({
+            showConfirm: !this.state.showConfirm
+        });
     };
+
 
     render() {
 
-        const { tasks, inputValue, selectedTasks } = this.state;
+        const { tasks, selectedTasks, showConfirm } = this.state;
 
         const taskComponents = tasks.map((task) => {
 
@@ -116,31 +101,17 @@ class ToDo extends Component {
                 <Container>
                     <Row className="justify-content-center">
                         <Col xs={10}>
-                            <InputGroup className="mb-3">
-                                <FormControl
-                                    placeholder="Input your task"
-                                    value={inputValue}
-                                    onChange={this.handleChange}
-                                    onKeyDown={this.handleKeyDown}
-                                    disabled={!!selectedTasks.size}
-                                />
-                                <InputGroup.Append>
-                                    <Button
-                                        variant="outline-primary"
-                                        onClick={this.addTask}
-                                        disabled={!!selectedTasks.size}
-                                    >
-                                        Add
-                                    </Button>
-                                </InputGroup.Append>
-                            </InputGroup>
+                        <NewTask 
+                        disabled = {!!selectedTasks.size}
+                        onAdd = {this.addTask}
+                        />
                         </Col>
                     </Row>
 
                     <Row>
                         <Button
                             variant="danger"
-                            onClick={this.removeSelected}
+                            onClick={this.toggleConfirm}
                             disabled={!selectedTasks.size}
                         >
                             Delete selected
@@ -152,6 +123,14 @@ class ToDo extends Component {
                         {taskComponents}
                     </Row>
                 </Container>
+
+               {showConfirm && 
+                <Confirm 
+                onClose ={this.toggleConfirm}
+                onConfirm ={this.removeSelected}
+                count={selectedTasks.size}
+                />
+            } 
             </div>
         );
     }
