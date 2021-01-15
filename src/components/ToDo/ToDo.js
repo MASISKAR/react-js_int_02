@@ -1,90 +1,157 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import styles from './todo.module.css';
-import {Container, Row, Col} from 'react-bootstrap';
+import { Container, Row, Col, Button, FormControl, InputGroup } from 'react-bootstrap';
+import idGenerator from '../../helpers/idGenerator';
+import Task from '../Task/Task';
 
-class ToDo extends Component{
-// state = {
-//     inputValue: '',
-//     tasks: []
-// };
+class ToDo extends Component {
+    state = {
+        inputValue: '',
+        tasks: [],
+        selectedTasks: new Set()
+    };
 
-handleChange = (event)=>{
-    this.setState({
-        inputValue: event.target.value
-    });
-};
+    handleChange = (event) => {
+        this.setState({
+            inputValue: event.target.value
+        });
+    };
 
-addTask = ()=>{
-const inputValue = this.state.inputValue.trim();
+    addTask = () => {
+        const inputValue = this.state.inputValue.trim();
 
-if(!inputValue){
-  return;  
-}
+        if (!inputValue) {
+            return;
+        }
 
-//variant 1
-// const tasks = [...this.state.tasks];
-// tasks.push(inputValue);
-
-//variant 1
-const tasks = [...this.state.tasks, inputValue];
+        const newTask = {
+            _id: idGenerator(),
+            title: inputValue
+        };
 
 
-this.setState({
-    tasks,
-    inputValue: ''
-});
-};
+        const tasks = [...this.state.tasks, newTask];
 
-    render(){
-        const {tasks, inputValue} = this.state;
-  
-        // const taskComponents = tasks.map((task, index)=>{
-        //     return <li key={index} className={index === 2 ? styles.selected : null}>{task}</li>
-        // });
 
-        // const taskComponents = tasks.map((task, index)=>{
-        //     return <li key={index} className={`${index === 2 ? styles.selected : ""} ${styles.task}`}>{task}</li>
-        // });
+        this.setState({
+            tasks,
+            inputValue: ''
+        });
+    };
 
-        const taskComponents = tasks.map((task, index)=>{
-            const classes = [styles.task];
-            if(index === 2){
-                classes.push(styles.selected);
+    deleteTask = (taskId) => {
+        const newTasks = this.state.tasks.filter((task) => taskId !== task._id);
+
+        this.setState({
+            tasks: newTasks
+        });
+    };
+
+    toggleTask = (taskId) => {
+        const selectedTasks = new Set(this.state.selectedTasks);
+        if (selectedTasks.has(taskId)) {
+            selectedTasks.delete(taskId);
+        }
+        else {
+            selectedTasks.add(taskId);
+        }
+
+        this.setState({
+            selectedTasks
+        });
+    };
+
+
+    removeSelected = () => {
+        const { selectedTasks, tasks } = this.state;
+
+        const newTasks = tasks.filter((task) => {
+            if (selectedTasks.has(task._id)) {
+                return false;
             }
+            return true;
+        });
+
+        this.setState({
+            tasks: newTasks,
+            selectedTasks: new Set()
+        });
+
+    };
+
+    handleKeyDown = (event) => {
+        if (event.key === "Enter") {
+            this.addTask();
+        }
+    };
+
+    render() {
+
+        const { tasks, inputValue, selectedTasks } = this.state;
+
+        const taskComponents = tasks.map((task) => {
+
             return (
                 <Col
-                key={index}
-                xs={2}
-                sm={6}
-
-                // lg={name==='Alex'? 10 : 6}
+                    key={task._id}
+                    xs={12}
+                    sm={6}
+                    md={4}
+                    lg={3}
+                    xl={2}
                 >
-                 <li  className={classes.join(' ')}>{task}</li>
+                    <Task 
+                    data={task}
+                    onToggle = {this.toggleTask}
+                    disabled = {!!selectedTasks.size}
+                    onDelete = {this.deleteTask}
+                    />
                 </Col>
             )
         });
 
         return (
             <div>
-            <h2>ToDo List</h2>
-            <input 
-            type="text"
-            value = {inputValue}
-            onChange={this.handleChange}
-            />
-            <button
-            onClick={this.addTask}
-            >
-            Add task
-            </button>
-            <ol>
-                {taskComponents}
-            </ol>
-            <Container>
-            <Row>
-            {taskComponents}
-            </Row>
-            </Container>
+                <h2>ToDo List</h2>
+                <Container>
+                    <Row className="justify-content-center">
+                        <Col xs={10}>
+                            <InputGroup className="mb-3">
+                                <FormControl
+                                    placeholder="Input your task"
+                                    value={inputValue}
+                                    onChange={this.handleChange}
+                                    onKeyDown={this.handleKeyDown}
+                                    disabled={!!selectedTasks.size}
+                                />
+                                <InputGroup.Append>
+                                    <Button
+                                        variant="outline-primary"
+                                        onClick={this.addTask}
+                                        disabled={!!selectedTasks.size}
+                                    >
+                                        Add
+                                    </Button>
+                                </InputGroup.Append>
+                            </InputGroup>
+                        </Col>
+                    </Row>
+
+                    <Row>
+                        <Button
+                            variant="danger"
+                            onClick={this.removeSelected}
+                            disabled={!selectedTasks.size}
+                        >
+                            Delete selected
+                        </Button>
+
+                    </Row>
+
+                    <Row>
+                        {taskComponents}
+                    </Row>
+                </Container>
             </div>
         );
     }

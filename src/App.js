@@ -1,13 +1,12 @@
 import React from 'react';
 import './App.css';
-import ToDo from 'testsdfsdfdsfsdfdsf';
-import Conditional from './demo/conditional';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import ToDo from './components/ToDo/ToDo';
 
 function App() {
   return (
     <div className="App">
       <ToDo />
-      <Conditional />
     </div>
   );
 }
