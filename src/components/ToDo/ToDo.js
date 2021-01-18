@@ -9,7 +9,8 @@ class ToDo extends Component {
     state = {
         tasks: [],
         selectedTasks: new Set(),
-        showConfirm: false
+        showConfirm: false,
+        openNewTaskModal: false
     };
 
 
@@ -18,7 +19,8 @@ class ToDo extends Component {
         const tasks = [...this.state.tasks, newTask];
 
         this.setState({
-            tasks
+            tasks,
+            openNewTaskModal: false
         });
     };
 
@@ -63,16 +65,35 @@ class ToDo extends Component {
 
     };
 
-    toggleConfirm = ()=>{
+    toggleConfirm = () => {
         this.setState({
             showConfirm: !this.state.showConfirm
+        });
+    };
+
+    selectAll = () => {
+        const taskIds = this.state.tasks.map((task) => task._id);
+        this.setState({
+            selectedTasks: new Set(taskIds)
+        });
+    };
+
+    deSelectAll = () => {
+        this.setState({
+            selectedTasks: new Set()
+        });
+    };
+
+    toggleNewTaskModal = ()=>{
+        this.setState({
+            openNewTaskModal: !this.state.openNewTaskModal
         });
     };
 
 
     render() {
 
-        const { tasks, selectedTasks, showConfirm } = this.state;
+        const { tasks, selectedTasks, showConfirm, openNewTaskModal } = this.state;
 
         const taskComponents = tasks.map((task) => {
 
@@ -85,11 +106,12 @@ class ToDo extends Component {
                     lg={3}
                     xl={2}
                 >
-                    <Task 
-                    data={task}
-                    onToggle = {this.toggleTask}
-                    disabled = {!!selectedTasks.size}
-                    onDelete = {this.deleteTask}
+                    <Task
+                        data={task}
+                        onToggle={this.toggleTask}
+                        disabled={!!selectedTasks.size}
+                        onDelete={this.deleteTask}
+                        selected={selectedTasks.has(task._id)}
                     />
                 </Col>
             )
@@ -100,22 +122,42 @@ class ToDo extends Component {
                 <h2>ToDo List</h2>
                 <Container>
                     <Row className="justify-content-center">
-                        <Col xs={10}>
-                        <NewTask 
-                        disabled = {!!selectedTasks.size}
-                        onAdd = {this.addTask}
-                        />
-                        </Col>
-                    </Row>
+                        <Col>
+                            <Button
+                                variant="primary"
+                                onClick={this.toggleNewTaskModal}
+                            >
+                                Add new Task
+                     </Button>
 
-                    <Row>
-                        <Button
-                            variant="danger"
-                            onClick={this.toggleConfirm}
-                            disabled={!selectedTasks.size}
-                        >
-                            Delete selected
-                        </Button>
+                        </Col>
+
+                        <Col>
+                            <Button
+                                variant="warning"
+                                onClick={this.selectAll}
+                            >
+                                Select All
+                     </Button>
+
+                        </Col>
+                        <Col>
+                            <Button
+                                variant="warning"
+                                onClick={this.deSelectAll}
+                            >
+                                Deselect All
+                            </Button>
+                        </Col>
+                        <Col>
+                            <Button
+                                variant="danger"
+                                onClick={this.toggleConfirm}
+                                disabled={!selectedTasks.size}
+                            >
+                                Delete selected
+                   </Button>
+                        </Col>
 
                     </Row>
 
@@ -124,13 +166,22 @@ class ToDo extends Component {
                     </Row>
                 </Container>
 
-               {showConfirm && 
-                <Confirm 
-                onClose ={this.toggleConfirm}
-                onConfirm ={this.removeSelected}
-                count={selectedTasks.size}
+                {showConfirm &&
+                    <Confirm
+                        onClose={this.toggleConfirm}
+                        onConfirm={this.removeSelected}
+                        count={selectedTasks.size}
+                    />
+                }
+                {
+                    openNewTaskModal &&
+                    <NewTask
+                    onClose = {this.toggleNewTaskModal}
+                    onAdd={this.addTask}
                 />
-            } 
+                }
+
+
             </div>
         );
     }

@@ -1,59 +1,59 @@
-import React, {Component} from 'react';
-import {Card, Button} from 'react-bootstrap';
+import React, { Component } from 'react';
+import { Card, Button } from 'react-bootstrap';
 import styles from './taskStyle.module.css';
-import PropTypes from 'prop-types'; 
+import PropTypes from 'prop-types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 
-class Task extends Component{
+class Task extends Component {
 
-    // static propTypes = {
-    //     data: PropTypes.object.isRequired,
-    //     onToggle: PropTypes.func.isRequired,
-    //     disabled: PropTypes.bool.isRequired,
-    //     onDelete: PropTypes.func.isRequired,
-    // };
+    handleChange = () => {
+        const { data, onToggle } = this.props;
+        onToggle(data._id);
+    };
 
-state = {
-    selected: false
-};
+    render() {
+        const task = this.props.data;
+        const { disabled, onDelete, selected } = this.props;
 
-handleChange = ()=>{
-    const {data, onToggle} = this.props;
-    onToggle(data._id);
-    this.setState({
-        selected: !this.state.selected,
-    });
-};
+        return (
+            <Card className={`${styles.task} ${selected ? styles.selected : ""}`}>
 
-render(){
-const task = this.props.data;
-const {disabled, onDelete} = this.props;
-const {selected} = this.state;
+                <Card.Body>
+                    <input
+                        type="checkbox"
+                        onChange={this.handleChange}
+                        checked={selected}
+                    />
+                    <Card.Title>{task.title}</Card.Title>
+                    <Card.Text>
+                        {task.description}
+                    </Card.Text>
+                    <Button
+                        className='m-1'
+                        variant="warning"
+                        disabled={disabled}
+                        onClick={() => onDelete(task._id)}
 
-    return(
-        <Card className={`${styles.task} ${selected ? styles.selected: ""}`}>
+                    >
+                        <FontAwesomeIcon icon={faEdit} />
+                    </Button>
 
-        <Card.Body>
-            <input
-                type="checkbox"
-                onChange={this.handleChange}
-            />
-            <Card.Title>{task.title}</Card.Title>
-            <Card.Text>
-                Some quick example text to build on the card title and
-  </Card.Text>
-            <Button
-                variant="danger"
-                disabled={disabled}
-                // onClick={() => this.deleteTask(task._id)}
-                onClick={() => onDelete(task._id)}
+                    <Button
+                    className='m-1'
+                        variant="danger"
+                        disabled={disabled}
+                        // onClick={() => this.deleteTask(task._id)}
+                        onClick={() => onDelete(task._id)}
 
-            >
-                Delete
-            </Button>
-        </Card.Body>
-    </Card>
-    )
-}
+                    >
+                        <FontAwesomeIcon icon={faTrash} />
+                    </Button>
+
+                </Card.Body>
+            </Card>
+        )
+    }
 }
 
 Task.propTypes = {
@@ -61,6 +61,7 @@ Task.propTypes = {
     onToggle: PropTypes.func.isRequired,
     disabled: PropTypes.bool.isRequired,
     onDelete: PropTypes.func.isRequired,
+    selected: PropTypes.bool.isRequired,
 };
 
 export default Task;
