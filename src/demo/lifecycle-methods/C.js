@@ -10,6 +10,10 @@ export default class C extends Component{
         console.log('C componentDidMount');
     }
 
+    componentDidUpdate(){
+        console.log('C componentDidUpdate');
+    }
+
     render(){
         console.log('C render');
         return(

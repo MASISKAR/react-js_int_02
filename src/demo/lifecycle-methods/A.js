@@ -1,11 +1,14 @@
 import React, {Component} from 'react';
 import B from './B';
+import D from './D';
 
 export default class A extends Component{
     constructor(props){
         super(props);
         this.state = {
-            value: ''
+            value: '',
+            message: '',
+            counter: 0
         };
         
         console.log('A constructor');
@@ -15,10 +18,42 @@ export default class A extends Component{
         console.log('A componentDidMount');
     }
 
+    componentDidUpdate(prevProps, prevState){
+        console.log('A componentDidUpdate');
+
+        console.log('A prevState', prevState);
+        console.log('A this.state', this.state);
+
+        console.log('A prevProps', prevProps);
+        console.log('A this.props', this.props);
+
+        if(prevState.value !== this.state.value){
+            this.setState({
+                message: 'The value has changed!'
+            });
+        }
+
+    }
+
+    shouldComponentUpdate(nextProps, nextState){
+        console.log('nextProps', nextProps)
+        console.log('nextState', nextState)
+            if(nextState.counter < 5){
+                return true;
+            }
+            return false;
+    }
+
 handleChange = (event)=>{
 
     this.setState({
         value: event.target.value
+    });
+};
+
+handleClick=()=>{
+    this.setState({
+        counter: this.state.counter+1
     });
 };
 
@@ -33,9 +68,20 @@ handleChange = (event)=>{
             value = {this.state.value}
             onChange = {this.handleChange}
             />
-            
-            <B/>
-          
+            <button
+            onClick = {this.handleClick}
+            >
+            Increase counter
+            </button>
+            <h3>{this.state.message}</h3>
+            <h4>Counter: {this.state.counter}</h4>
+
+            {
+                this.state.counter !== 2 && 
+                <B data={this.state.counter}/>
+            }
+
+             <D />
             </div>
         );
     }
