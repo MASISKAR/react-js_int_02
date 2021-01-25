@@ -3,7 +3,7 @@ import { Button, FormControl, Modal } from 'react-bootstrap';
 import idGenerator from '../../helpers/idGenerator';
 import PropTypes from 'prop-types'; 
 
-class NewTask extends Component{
+class NewTask extends Component {
     state = {
         title: '',
         description: ''
@@ -98,16 +98,6 @@ class NewTask extends Component{
             <Button onClick={onClose}>Cancel</Button>
           </Modal.Footer>
         </Modal>
-
-
-
-
-
-
-
-
-           
-
         </>
         );
     }
