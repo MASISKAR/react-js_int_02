@@ -16,22 +16,101 @@ class ToDo extends Component {
     };
 
 
+    componentDidMount(){
+        fetch('http://localhost:3001/task', {
+            method: 'GET',
+            headers: {
+                "Content-Type": 'application/json'
+            }
+        })
+            .then(async (response) => {
+                const res = await response.json();
+
+                if(response.status >=400 && response.status < 600){
+                    if(res.error){
+                        throw res.error;
+                    }
+                    else {
+                        throw new Error('Something went wrong!');
+                    }
+                }
+
+                this.setState({
+                    tasks: res
+                });
+
+            })
+            .catch((error)=>{
+                console.log('catch error', error);
+            });
+
+    }
+
 
     addTask = (newTask) => {
-        const tasks = [...this.state.tasks, newTask];
 
-        this.setState({
-            tasks,
-            openNewTaskModal: false
-        });
+        fetch('http://localhost:3001/task', {
+            method: 'POST',
+            body: JSON.stringify(newTask),
+            headers: {
+                "Content-Type": 'application/json'
+            }
+        })
+            .then(async (response) => {
+                const res = await response.json();
+
+                if(response.status >=400 && response.status < 600){
+                    if(res.error){
+                        throw res.error;
+                    }
+                    else {
+                        throw new Error('Something went wrong!');
+                    }
+                }
+                
+                const tasks = [...this.state.tasks, res];
+
+                this.setState({
+                    tasks,
+                    openNewTaskModal: false
+                });
+
+            })
+            .catch((error)=>{
+                console.log('catch error', error);
+            });
+
+
     };
 
     deleteTask = (taskId) => {
+        fetch(`http://localhost:3001/task/${taskId}`, {
+            method: 'DELETE',
+            headers: {
+                "Content-Type": 'application/json'
+            }
+        })
+            .then(async (response) => {
+                const res = await response.json();
+
+                if(response.status >=400 && response.status < 600){
+                    if(res.error){
+                        throw res.error;
+                    }
+                    else {
+                        throw new Error('Something went wrong!');
+                    }
+                }
+                
         const newTasks = this.state.tasks.filter((task) => taskId !== task._id);
 
         this.setState({
             tasks: newTasks
         });
+            })
+            .catch((error)=>{
+                console.log('catch error', error);
+            });
     };
 
     toggleTask = (taskId) => {
@@ -86,21 +165,21 @@ class ToDo extends Component {
         });
     };
 
-    toggleNewTaskModal = ()=>{
+    toggleNewTaskModal = () => {
         this.setState({
             openNewTaskModal: !this.state.openNewTaskModal
         });
     };
 
-    handleEdit = (editTask)=>{
+    handleEdit = (editTask) => {
         this.setState({ editTask });
     };
 
-    handleSaveTask = (editedTask)=>{
+    handleSaveTask = (editedTask) => {
         const tasks = [...this.state.tasks];
-        const foundIndex = tasks.findIndex((task)=> task._id === editedTask._id);
+        const foundIndex = tasks.findIndex((task) => task._id === editedTask._id);
         tasks[foundIndex] = editedTask;
-        
+
         this.setState({
             tasks,
             editTask: null
@@ -193,18 +272,18 @@ class ToDo extends Component {
                 {
                     openNewTaskModal &&
                     <NewTask
-                    className='modal'
-                    onClose = {this.toggleNewTaskModal}
-                    onAdd={this.addTask}
-                />
+                        className='modal'
+                        onClose={this.toggleNewTaskModal}
+                        onAdd={this.addTask}
+                    />
                 }
                 {
-                    editTask && 
+                    editTask &&
                     <EditTaskModal
-                        data = {editTask}
-                        onClose = {()=> this.handleEdit(null)}
-                        onSave = {this.handleSaveTask}
-                     />
+                        data={editTask}
+                        onClose={() => this.handleEdit(null)}
+                        onSave={this.handleSaveTask}
+                    />
                 }
 
             </div>
