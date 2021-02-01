@@ -131,18 +131,44 @@ class ToDo extends Component {
     removeSelected = () => {
         const { selectedTasks, tasks } = this.state;
 
-        const newTasks = tasks.filter((task) => {
-            if (selectedTasks.has(task._id)) {
-                return false;
-            }
-            return true;
-        });
+        const body = {
+            tasks: [...selectedTasks]
+        };
+        fetch(`http://localhost:3001/task`, {
+            method: 'PATCH',
+            headers: {
+                "Content-Type": 'application/json'
+            },
+            body: JSON.stringify(body)
+        })
+            .then(async (response) => {
+                const res = await response.json();
 
-        this.setState({
-            tasks: newTasks,
-            selectedTasks: new Set(),
-            showConfirm: false
-        });
+                if(response.status >=400 && response.status < 600){
+                    if(res.error){
+                        throw res.error;
+                    }
+                    else {
+                        throw new Error('Something went wrong!');
+                    }
+                }
+
+                const newTasks = tasks.filter((task) => {
+                    if (selectedTasks.has(task._id)) {
+                        return false;
+                    }
+                    return true;
+                });
+        
+                this.setState({
+                    tasks: newTasks,
+                    selectedTasks: new Set(),
+                    showConfirm: false
+                });
+            })
+            .catch((error)=>{
+                console.log('catch error', error);
+            });
 
     };
 
@@ -176,6 +202,25 @@ class ToDo extends Component {
     };
 
     handleSaveTask = (editedTask) => {
+        fetch(`http://localhost:3001/task/${editedTask._id}`, {
+            method: 'PUT',
+            headers: {
+                "Content-Type": 'application/json'
+            },
+            body: JSON.stringify(editedTask)
+        })
+            .then(async (response) => {
+                const res = await response.json();
+
+                if(response.status >=400 && response.status < 600){
+                    if(res.error){
+                        throw res.error;
+                    }
+                    else {
+                        throw new Error('Something went wrong!');
+                    }
+                }
+                
         const tasks = [...this.state.tasks];
         const foundIndex = tasks.findIndex((task) => task._id === editedTask._id);
         tasks[foundIndex] = editedTask;
@@ -184,6 +229,11 @@ class ToDo extends Component {
             tasks,
             editTask: null
         });
+              
+            })
+            .catch((error)=>{
+                console.log('catch error', error);
+            });
     };
 
     render() {

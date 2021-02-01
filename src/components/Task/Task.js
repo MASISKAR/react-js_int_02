@@ -4,6 +4,7 @@ import styles from './taskStyle.module.css';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
+import {formatDate} from '../../helpers/utils';
 
 class Task extends PureComponent {
 
@@ -27,8 +28,12 @@ class Task extends PureComponent {
                     />
                     <Card.Title>{task.title}</Card.Title>
                     <Card.Text>
-                        {task.description}
+                       Description: {task.description}
                     </Card.Text>
+                    <Card.Text>
+                {/*Date: {task.date?.slice(0, 10)} */}    
+                    Date: {formatDate(task.date)}
+                </Card.Text>
                     <Button
                         className='m-1'
                         variant="warning"
