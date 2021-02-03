@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 // import styles from './todo.module.css';
 import { Container, Row, Col, Button } from 'react-bootstrap';
-import Task from '../Task/Task';
-import NewTask from '../NewTask/NewTask';
-import Confirm from '../Confirm';
-import EditTaskModal from '../EditTaskModal';
+import Task from '../../Task/Task';
+import NewTask from '../../NewTask/NewTask';
+import Confirm from '../../Confirm';
+import EditTaskModal from '../../EditTaskModal';
 
 class ToDo extends Component {
     state = {
