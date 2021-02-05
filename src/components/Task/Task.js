@@ -27,7 +27,7 @@ class Task extends PureComponent {
                         onChange={this.handleChange}
                         checked={selected}
                     />
-                    <Link to='/task'>
+                    <Link to={`/task/${task._id}`}>
                     <Card.Title>{task.title}</Card.Title>
                     </Link>
                     
