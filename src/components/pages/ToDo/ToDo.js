@@ -326,6 +326,7 @@ class ToDo extends Component {
                         onClose={this.toggleNewTaskModal}
                         onAdd={this.addTask}
                     />
+
                 }
                 {
                     editTask &&
