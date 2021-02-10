@@ -7,26 +7,13 @@ import Contact from './components/pages/Contact/Contact';
 import NotFound from './components/pages/NotFound/NotFound';
 import NavMenu from './components/NavMenu/NavMenu';
 import SingleTask from './components/pages/SingleTask/SingleTask';
-import FlexBox from './demo/FlexBox';
-import Block from './demo/Block';
-
+import Hooks from './demo/Hooks';
 import {BrowserRouter, Route, Switch, Redirect} from 'react-router-dom';
-
-const blocks = [];
-for(let i=1; i<=25; i++){
-  blocks.push(<Block key={i}/>);
-}
-
 
 function App() {
   return (
     <div className="App">
-    <FlexBox>
-      {blocks}
-    </FlexBox>
- 
-
-
+<Hooks />
 
     <BrowserRouter>
     <NavMenu />
