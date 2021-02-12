@@ -7,14 +7,11 @@ import Contact from './components/pages/Contact/Contact';
 import NotFound from './components/pages/NotFound/NotFound';
 import NavMenu from './components/NavMenu/NavMenu';
 import SingleTask from './components/pages/SingleTask/SingleTask';
-import Hooks from './demo/Hooks';
 import {BrowserRouter, Route, Switch, Redirect} from 'react-router-dom';
 
 function App() {
   return (
     <div className="App">
-<Hooks />
-
     <BrowserRouter>
     <NavMenu />
 
