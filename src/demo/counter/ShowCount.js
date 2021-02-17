@@ -6,6 +6,7 @@ function ShowCount(props){
     return(
         <h2>
         Count: {props.value}
+        <br/>
         Message: {props.message}
         </h2>
     );

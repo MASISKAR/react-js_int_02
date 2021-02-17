@@ -5,10 +5,12 @@ import Task from '../../Task/Task';
 import NewTask from '../../NewTask/NewTask';
 import Confirm from '../../Confirm';
 import EditTaskModal from '../../EditTaskModal';
+import {connect} from 'react-redux';
+import request from '../../../helpers/request';
 
 class ToDo extends Component {
     state = {
-        tasks: [],
+        // tasks: [],
         selectedTasks: new Set(),
         showConfirm: false,
         openNewTaskModal: false,
@@ -17,33 +19,7 @@ class ToDo extends Component {
 
 
     componentDidMount(){
-        fetch('http://localhost:3001/task', {
-            method: 'GET',
-            headers: {
-                "Content-Type": 'application/json'
-            }
-        })
-            .then(async (response) => {
-                const res = await response.json();
-
-                if(response.status >=400 && response.status < 600){
-                    if(res.error){
-                        throw res.error;
-                    }
-                    else {
-                        throw new Error('Something went wrong!');
-                    }
-                }
-
-                this.setState({
-                    tasks: res
-                });
-
-            })
-            .catch((error)=>{
-                console.log('catch error', error);
-            });
-
+        this.props.getTasks();
     }
 
 
@@ -238,7 +214,8 @@ class ToDo extends Component {
 
     render() {
 
-        const { tasks, selectedTasks, showConfirm, openNewTaskModal, editTask } = this.state;
+        const { selectedTasks, showConfirm, openNewTaskModal, editTask } = this.state;
+        const {tasks} = this.props;
 
         const taskComponents = tasks.map((task) => {
 
@@ -342,4 +319,32 @@ class ToDo extends Component {
     }
 }
 
-export default ToDo;
+const mapStateToProps = (state)=>{
+    return {
+        tasks: state.tasks
+    };
+};
+
+// const mapDispatchToProps = (dispatch)=>{
+//     return {
+//         getTasks: ()=>{
+//             request('http://localhost:3001/task')
+//             .then((tasks)=>{
+//             dispatch({type: 'GET_TASKS', tasks: tasks});
+//             });
+//         }
+//     };
+// };
+
+const mapDispatchToProps = {
+    getTasks: ()=>{
+        return (dispatch)=>{
+            request('http://localhost:3001/task')
+            .then((tasks)=>{
+            dispatch({type: 'GET_TASKS', tasks: tasks});
+            });
+        }
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ToDo);
