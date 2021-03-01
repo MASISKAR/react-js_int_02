@@ -3,7 +3,10 @@ import { connect } from 'react-redux';
 import { InputGroup, Button, FormControl, DropdownButton, Dropdown } from 'react-bootstrap';
 import { textTruncate } from '../../helpers/utils';
 import DatePicker from "react-datepicker";
+import {formatDate} from '../../helpers/utils';
+import {getTasks} from '../../store/actions';
 import "react-datepicker/dist/react-datepicker.css";
+
 
 const statusOptions = [
     {
@@ -70,7 +73,7 @@ const dateOptions = [
     }
 ];
 
-function Search(props) {
+function Search({getTasks}) {
 
     const [status, setStatus] = useState({
         value: ''
@@ -97,11 +100,22 @@ function Search(props) {
     };
 
     const handleSubmit = ()=>{
-        console.log('search', search);
-        console.log('sort', sort);
-        console.log('status', status);
-        console.log('dates', dates);
+        const params = {};
 
+        search && (params.search = search);
+        sort.value && (params.sort = sort.value);
+        status.value && (params.status = status.value);
+
+
+       for(let key in dates){
+           const value = dates[key];
+           if(value){
+            const date = formatDate(value.toISOString());
+            params[key] = date;
+           }
+       }
+
+       getTasks(params);
     };
 
     return (
@@ -164,10 +178,11 @@ function Search(props) {
 
                     {
                         dateOptions.map((option, index)=>(
-                            <div>
-                            <span>{option.label} </span>
-                            <DatePicker 
+                            <div
                             key={index}
+                            >
+                            <span>{option.label} </span>
+                            <DatePicker
                             selected={dates[option.value]}
                             onChange={(value)=> handleChangeDate(value, option.value)}
                             />
@@ -178,4 +193,8 @@ function Search(props) {
     )
 }
 
-export default connect()(Search);
+const mapDispatchToProps = {
+    getTasks
+  };
+
+export default connect(null, mapDispatchToProps)(Search);
