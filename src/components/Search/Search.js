@@ -92,6 +92,8 @@ function Search({getTasks}) {
         complete_gte: null
     });
 
+
+    
     const handleChangeDate = (value, name)=>{
         setDates({
             ...dates,
