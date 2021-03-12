@@ -112,6 +112,7 @@ function Search({getTasks}) {
        for(let key in dates){
            const value = dates[key];
            if(value){
+               //fixme
             const date = formatDate(value.toISOString());
             params[key] = date;
            }

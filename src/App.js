@@ -7,6 +7,8 @@ import Contact from './components/pages/Contact/Contact';
 import NotFound from './components/pages/NotFound/NotFound';
 import NavMenu from './components/NavMenu/NavMenu';
 import SingleTask from './components/pages/SingleTask/SingleTask';
+import Register from './components/pages/Register/Register';
+import Login from './components/pages/Login/Login';
 import {Router, Route, Switch, Redirect} from 'react-router-dom';
 import Spinner from './components/Spinner/Spinner';
 import {connect} from 'react-redux';
@@ -46,6 +48,16 @@ function App({loading, successMessage, errorMessage}) {
       <Route 
        path='/'
        component = {ToDo}
+       exact = {true}
+      />
+      <Route 
+       path='/register'
+       component = {Register}
+       exact = {true}
+      />
+      <Route 
+       path='/login'
+       component = {Login}
        exact = {true}
       />
       <Route 

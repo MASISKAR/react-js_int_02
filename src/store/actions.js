@@ -117,3 +117,25 @@ export function editTask(data, from) {
             });
     }
 }
+
+
+export function register(data) {
+    return function (dispatch) {
+        dispatch({ type: actionTypes.PENDING });
+        request(`${apiHost}/user`, 'POST', data)
+            .then((result) => {
+                console.log('result', result)
+                // dispatch({ 
+                //     type: actionTypes.EDIT_TASK, 
+                //     editedTask, from,
+                //     status: data.status
+                // });
+            })
+            .catch((err) => {
+                dispatch({
+                    type: actionTypes.ERROR,
+                    error: err.message
+                });
+            });
+    }
+}
