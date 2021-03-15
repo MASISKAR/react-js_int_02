@@ -112,6 +112,7 @@ function Search({getTasks}) {
        for(let key in dates){
            const value = dates[key];
            if(value){
+               //fixme
             const date = formatDate(value.toISOString());
             params[key] = date;
            }
@@ -125,6 +126,7 @@ function Search({getTasks}) {
             <InputGroup >
 
                 <FormControl
+                    value={search}
                     placeholder="Search"
                     onChange={(event) => setSearch(event.target.value)}
                 />
