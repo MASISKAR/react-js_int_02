@@ -15,6 +15,7 @@ import {connect} from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {history} from './helpers/history';
+import AuthRoute from './components/AuthRoute';
 
 const toastProps = {
   position: "bottom-left",
@@ -25,22 +26,9 @@ const toastProps = {
   draggable: true
   };
 
-function AuthRoute({path, component}){
 
-  return (
-    <Route 
-    path={path}
-    component={component}
-    exact = {true}
-   />
-  );
+function App({loading, successMessage, errorMessage}) {
 
-
-}
-
-
-function App({loading, successMessage, errorMessage, isAuthenticated}) {
-console.log(isAuthenticated)
   useEffect(()=>{
     
     if(successMessage){
@@ -59,32 +47,37 @@ console.log(isAuthenticated)
     <NavMenu />
 
     <Switch>
-    <AuthRoute 
-    path='/'
-    component = {ToDo}
-    exact
-   />
-      <Route 
+      <AuthRoute 
+      path='/'
+      component = {ToDo}
+      type='private'
+      exact
+    />
+      <AuthRoute 
        path='/register'
        component = {Register}
+       type='public'
        exact
       />
       <AuthRoute 
        path='/login'
        component = {Login}
+       type='public'
        exact
       />
       <AuthRoute 
       path='/home'
       component = {ToDo}
+      type='private'
       exact = {true}
       />
-      <AuthRoute 
+
+      <Route 
       path='/about'
       component = {About}
       exact = {true}
       />
-      <AuthRoute 
+      <Route 
       path='/contact'
       component = {Contact}
       exact
@@ -92,9 +85,10 @@ console.log(isAuthenticated)
       <AuthRoute 
       path='/task/:taskId'
       component = {SingleTask}
+      type='private'
       exact
       />
-      <AuthRoute 
+      <Route 
       path='/not-found'
       component = {NotFound}
       exact
@@ -116,8 +110,7 @@ const mapStateToProps = (state) => {
   return {
       loading: state.loading,
       successMessage: state.successMessage,
-      errorMessage: state.errorMessage,
-      isAuthenticated: state.isAuthenticated
+      errorMessage: state.errorMessage
   };
 };
 

@@ -5,7 +5,6 @@ import styles from './navMenuStyle.module.css';
 import {connect} from 'react-redux';
 
 function NavMenu({ isAuthenticated }){
-console.log('isAuthenticated', isAuthenticated);
     return(
         <Navbar bg="dark" variant="dark">
         <Nav className="mr-auto">
