@@ -154,6 +154,13 @@ export default function reducer(state=defaultState, action){
         };
       }
 
+      case actionTypes.LOGOUT:
+        return {
+        ...state,
+          loading: false,
+          isAuthenticated: false
+      }
+
       default: return state;
     }
     }
