@@ -129,8 +129,3 @@ const mapDispatchToProps = {
 };
 
 export default connect(null, mapDispatchToProps)(NewTask);
-
-const name='dsfsdf';
-const age=45;
-
-export {age, name}
