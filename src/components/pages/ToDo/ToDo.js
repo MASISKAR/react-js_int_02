@@ -5,8 +5,9 @@ import Task from '../../Task/Task';
 import NewTask from '../../NewTask/NewTask';
 import Confirm from '../../Confirm';
 import EditTaskModal from '../../EditTaskModal';
+import Search from '../../Search/Search';
 import { connect } from 'react-redux';
-import { getTasks, deleteTask,deleteTasks } from '../../../store/actions';
+import { getTasks, deleteTask, deleteTasks } from '../../../store/actions';
 
 
 class ToDo extends Component {
@@ -25,21 +26,27 @@ class ToDo extends Component {
 
 
     componentDidUpdate(prevProps) {
-        if (!prevProps.addTaskSuccess && this.props.addTaskSuccess){
+        if (!prevProps.addTaskSuccess && this.props.addTaskSuccess) {
             this.setState({
                 openNewTaskModal: false
             });
             return;
         }
 
-        if (!prevProps.deleteTasksSuccess && this.props.deleteTasksSuccess){
+        if (!prevProps.deleteTasksSuccess && this.props.deleteTasksSuccess) {
             this.setState({
                 selectedTasks: new Set(),
                 showConfirm: false
             });
             return;
         }
-           
+
+        if (!prevProps.editTasksSuccess && this.props.editTasksSuccess) {
+            this.setState({
+                editTask: null
+            });
+            return;
+        }
     }
 
 
@@ -126,7 +133,7 @@ class ToDo extends Component {
 
     removeSelected = () => {
         const { selectedTasks } = this.state;
-    this.props.deleteTasks(selectedTasks);
+        this.props.deleteTasks(selectedTasks);
     };
 
     toggleConfirm = () => {
@@ -225,6 +232,11 @@ class ToDo extends Component {
             <div>
                 <h2>ToDo List</h2>
                 <Container>
+                    <Row>
+                        <Col >
+                            <Search />
+                        </Col>
+                    </Row>
                     <Row className="justify-content-center">
                         <Col>
                             <Button
@@ -290,7 +302,7 @@ class ToDo extends Component {
                     <EditTaskModal
                         data={editTask}
                         onClose={() => this.handleEdit(null)}
-                        onSave={this.handleSaveTask}
+                    //onSave={this.handleSaveTask}
                     />
                 }
 
@@ -303,17 +315,14 @@ const mapStateToProps = (state) => {
     return {
         tasks: state.tasks,
         addTaskSuccess: state.addTaskSuccess,
-        deleteTasksSuccess: state.deleteTasksSuccess
+        deleteTasksSuccess: state.deleteTasksSuccess,
+        editTasksSuccess: state.editTasksSuccess
     };
 };
 
 // const mapDispatchToProps = (dispatch)=>{
 //     return {
-//         getTasks: ()=>{
-//             request('http://localhost:3001/task')
-//             .then((tasks)=>{
-//             dispatch({type: 'GET_TASKS', tasks: tasks});
-//             });
+//         getTasks;
 //         }
 //     };
 // };
