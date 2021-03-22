@@ -42,7 +42,6 @@ function Register(props) {
 
         if(valid){
             props.register(values);
-            console.log(values);
         }
 
    

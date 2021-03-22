@@ -15,6 +15,7 @@ import {connect} from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {history} from './helpers/history';
+import AuthRoute from './components/AuthRoute';
 
 const toastProps = {
   position: "bottom-left",
@@ -24,6 +25,7 @@ const toastProps = {
   pauseOnHover: true,
   draggable: true
   };
+
 
 function App({loading, successMessage, errorMessage}) {
 
@@ -45,26 +47,31 @@ function App({loading, successMessage, errorMessage}) {
     <NavMenu />
 
     <Switch>
-      <Route 
-       path='/'
-       component = {ToDo}
-       exact = {true}
-      />
-      <Route 
+      <AuthRoute 
+      path='/'
+      component = {ToDo}
+      type='private'
+      exact
+    />
+      <AuthRoute 
        path='/register'
        component = {Register}
-       exact = {true}
+       type='public'
+       exact
       />
-      <Route 
+      <AuthRoute 
        path='/login'
        component = {Login}
-       exact = {true}
+       type='public'
+       exact
       />
-      <Route 
+      <AuthRoute 
       path='/home'
       component = {ToDo}
+      type='private'
       exact = {true}
       />
+
       <Route 
       path='/about'
       component = {About}
@@ -75,9 +82,10 @@ function App({loading, successMessage, errorMessage}) {
       component = {Contact}
       exact
       />
-      <Route 
+      <AuthRoute 
       path='/task/:taskId'
       component = {SingleTask}
+      type='private'
       exact
       />
       <Route 
