@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import styles from './contactStyle.module.css';
 
@@ -104,6 +104,18 @@ const handleSubmit = ()=>{
     }
 
 };
+
+const {sendFormSuccess} = this.props;
+
+useEffect(()=>{
+    if(sendFormSuccess){
+        setValues({
+            name: '',
+            email: '',
+            message: ''
+        });
+    }
+}, [sendFormSuccess]);
 
     return (
         <Container>
